@@ -1,0 +1,173 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="container">
+    <div class="d-flex align-items-center justify-content-between">
+        <h2>Hello <span class="text-info">@ViewData["username"] (Employee)</span></h2>
+        <form action="Logout" method="post">
+            <button class="btn btn-outline-warning">LOGOUT</button>
+        </form>
+
+    </div>
+
+    <p class="text-success">@ViewData["insert_msg"]</p>
+    <p class="text-danger">@ViewData["insert_err"]</p>
+    <div class="row mb-2">
+        <form method="post" class="w-75">
+            <div class="row">
+                <span class="col-3"><input type="text" name="name" class="form-control" placeholder="Name.." /></span>
+                <span class="col-3"><input type="email" name="email" class="form-control" placeholder="Email.." /></span>
+                <span class="col-3"><input type="text" name="username" class="form-control" placeholder="Username.." /></span>
+                <span class="col-3"><input type="text" name="password" class="form-control" placeholder="Password.." /></span>
+                <input type="hidden" name="post_type" value="add" />
+            </div>
+            <button type="submit" class="btn btn-primary my-3">ADD NEW FARMER</button>
+        </form>
+    </div>
+
+    <div>
+        <table class="table table-dark">
+            <thead>
+            <th>Name</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th></th>
+            </thead>
+            <tbody>
+                @foreach (var farmer in (dynamic)ViewData["farmers"])
+                {
+                    <tr>
+                        <form method="post" class="w-100">
+                        <td class="align-content-center"><input type="text" value='@farmer.name' name="name" class="form-control" /></td>
+                        <td class="align-content-center"><input type="text" value='@farmer.username' name="username" class="form-control" /></td>
+                        <td class="align-content-center"><input type="email" value='@farmer.email' name="email" readonly class="form-control" /></td>
+                        <td class="align-content-center">
+                            <button class="btn btn-warning w-100" name="post_type" value="edit">EDIT</button>
+                            <button class="btn btn-primary mt-2 w-100" name="post_type" value="delete">DELETE</button>
+                        </td>
+                        </form>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div>
+        <h2 class="text-info">Farmer Products</h2>
+
+        <div class="row bg-opacity-25 my-2">
+            <h2 class="text-info w-100 text-center align-content-center">Sort By:</h2>
+            <div class="d-flex flex-column g-1 col-3">
+                <span>Name</span>
+                <select id="sort-name" class="form-select">
+                    <option value="desc">Descending</option>
+                    <option value="asc">Ascending</option>
+                </select>
+            </div>
+
+            <div class="d-flex flex-column g-1 col-3">
+                <span>Farmer</span>
+                <select id="sort-farmer" class="form-select">
+                    <option value="desc">Descending</option>
+                    <option value="asc">Ascending</option>
+                </select>
+            </div>
+
+            <div class="d-flex flex-column g-1 col-3">
+                <span>Production Date</span>
+                <select id="sort-date" class="form-select">
+                    <option value="desc">Descending</option>
+                    <option value="asc">Ascending</option>
+                </select>
+            </div>
+        </div>
+        <script>var data = [];</script>
+        <div class="d-flex flex-column" id="products">
+            @foreach (var item in (dynamic)ViewData["products"])
+            {
+                <script>
+                    data.push({
+                        name: "@item.Name",
+                        farmer: "@item.Farmer",
+                        image: "@item.Image",
+                        category: "@item.Category",
+                        date: "@item.Production_date",
+                    });</script>
+
+            }
+        </div>
+    </div>
+</div>
+<script>
+    window.onload = () => {
+        const products_div = document.querySelector("#products");
+
+        document.getElementById("sort-date").addEventListener("change", e => {
+            sortByDate(e);
+        })
+
+        document.getElementById("sort-name").addEventListener("change", e => {
+            sortByName(e);
+        })
+
+        document.getElementById("sort-farmer").addEventListener("change", e => {
+            sortByFarmer(e);
+        })
+
+        const Display = () => {
+            products_div.innerHTML = "";
+            data.map(item => {
+                products_div.innerHTML += `
+                        <div
+                            class="row mb-2 product" style="background-color: darkslategray; padding: 10px 0;">
+                            <img src="${item.image}" alt="${item.name}" class="col-4" style="width: 10em;" />
+                            <div class="col-6">
+                                <p class="text-info">Name: ${item.name}</p>
+                                    <p class="text-info">Farmer: ${item.farmer}</p>
+                                    <p class="text-info">Category: ${item.category}</p>
+                                    <p class="text-info">Production: ${item.date}</p>
+                            </div>
+
+                        </div>
+                `;
+            })
+        };
+        Display();
+
+        const sortByName = (e) => {
+            let order = e.target.value;
+            if (order == "asc") {
+                data.sort((a, b) => a.name.localeCompare(b.name));
+            } else {
+                data.sort((a, b) => b.name.localeCompare(a.name));
+            }
+            Display();
+            console.log("sorting by name");
+        }
+
+        const sortByFarmer = (e) => {
+            let order = e.target.value;
+            if (order == "asc") {
+                data.sort((a, b) => a.farmer.localeCompare(b.farmer));
+            } else {
+                data.sort((a, b) => b.farmer.localeCompare(a.farmer));
+            }
+            Display();
+            console.log("sorting by farmer");
+        }
+
+        const sortByDate = (e) => {
+            let order = e.target.value;
+            if (order == "asc") {
+                data.sort((a, b) => new Date(a.date) - new Date(b.date));
+            } else {
+                data.sort((a, b) => new Date(b.date) - new Date(a.date));
+            }
+            Display();
+            console.log("sorting by date");
+        }
+    }
+</script>

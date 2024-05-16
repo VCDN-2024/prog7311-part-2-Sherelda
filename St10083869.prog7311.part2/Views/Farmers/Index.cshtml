@@ -1,0 +1,61 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="container">
+    <div class="d-flex align-items-center justify-content-between">
+        <h2>Hello <span class="text-info">@ViewData["username"] (Farmer)</span></h2>
+        <form action="Logout" method="post">
+            <button class="btn btn-outline-warning">LOGOUT</button>
+        </form>
+
+    </div>
+
+    <p>@ViewData["insert_msg"]</p>
+    <div class="row mb-2">
+        <form method="post" class="w-75">
+            <div class="row">
+                <span class="col-3"><input type="text" name="name" class="form-control" placeholder="Name.." /></span>
+                <span class="col-3"><input type="date" name="production_date" class="form-control" placeholder="Production.." /></span>
+                <span class="col-3"><input type="url" name="image" class="form-control" placeholder="Image url.." /></span>
+                <span class="col-3"><input type="text" name="category" class="form-control" placeholder="Category.." /></span>
+                <input type="hidden" name="post_type" value="add" />
+            </div>
+            <button type="submit" class="btn btn-primary my-3">ADD NEW PRODUCT</button>
+        </form>
+    </div>
+
+    <div>
+        <h2>My Products</h2>
+
+        <table class="table table-dark">
+            <thead>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Production Date</th>
+            <th></th>
+            </thead>
+            <tbody>
+                @foreach (var item in (dynamic)ViewData["products"])
+                {
+                    <tr>
+                        <form method="post" class="w-100">
+                            <input type="hidden" value="@item.Id" name="id" />
+                        <td><img src="@item.Image" alt="@item.Name" class="rounded-2" style="width: 10em;" /></td>
+                        <td class="align-content-center"><input type="text" value='@item.Name' name="name" class="form-control" /></td>
+                        <td class="align-content-center"><input type="text" value='@item.Category' name="category" class="form-control" /></td>
+                        <td class="align-content-center"><input type="date" value='@item.Production_date' name="production_date" class="form-control" /></td>
+                        <td class="align-content-center">
+                            <button class="btn btn-warning w-75" name="post_type" value="edit">EDIT</button>
+                            <button class="btn btn-primary my-2 w-75" name="post_type" value="delete">DELETE</button>
+                        </td>
+                        </form>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

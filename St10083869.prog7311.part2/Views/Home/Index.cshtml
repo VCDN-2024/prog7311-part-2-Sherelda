@@ -1,0 +1,79 @@
+﻿@{
+	ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+	<h3 class="text-success">@ViewData["register_msg"]</h3>
+	<h3 class="text-success">@ViewData["login_msg"]</h3>
+
+	<div class="auth">
+		<h2>Welcome</h2>
+
+		<div class="container" id="container">
+			<div class="form-container sign-up-container">
+				<form action="" method="post">
+					<h1>Create Account</h1>
+					<span>Use your email for registration</span>
+					<p class="alert-danger">@ViewData["register_error"]</p>
+					<input type="text" placeholder="Name" name="reg_fullname" required />
+					<input type="email" placeholder="Email" name="reg_email" required />
+					<input type="password" placeholder="Password" name="reg_password" required />
+					<select name="reg_user_type" class="form-select mb-2">
+						<option value="farmer" selected>Farmer</option>
+						<option value="employee">Employee</option>
+					</select>
+					<button type="submit">Sign Up</button>
+					<input type="hidden" value="register" name="auth" />
+				</form>
+			</div>
+
+			<div class="form-container sign-in-container">
+				<form action="" method="post">
+					<h1>Sign in</h1>
+					<p class="text-danger">@ViewData["login_error"]</p>
+					<span>Use your account</span>
+					<input type="email" placeholder="Email" name="log_email" />
+					<input type="password" placeholder="Password" name="log_password" />
+					<select name="log_user_type" class="form-select">
+						<option value="farmer">Farmer</option>
+						<option value="employee">Employee</option>
+					</select>
+					<a href="#">Forgot your password?</a>
+					<button type="submit">Sign In</button>
+					<input type="hidden" value="login" name="auth" />
+				</form>
+			</div>
+
+			<div class="overlay-container">
+				<div class="overlay">
+					<div class="overlay-panel overlay-left">
+						<h1>Welcome Back!</h1>
+						<p>To keep connected with us please login with your email and password</p>
+						<button class="ghost" id="signIn">Sign In</button>
+					</div>
+					<div class="overlay-panel overlay-right">
+						<h1>Hello, Farmer / Employee!</h1>
+						<p>Enter your personal details and start journey with us</p>
+						<button class="ghost" id="signUp">Sign Up</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<footer>
+		</footer>
+	</div>
+</div>
+<script>
+	const signUpButton = document.getElementById('signUp');
+	const signInButton = document.getElementById('signIn');
+	const container = document.getElementById('container');
+
+	signUpButton.addEventListener('click', () => {
+		container.classList.add("right-panel-active");
+	});
+
+	signInButton.addEventListener('click', () => {
+		container.classList.remove("right-panel-active");
+	});
+</script>
