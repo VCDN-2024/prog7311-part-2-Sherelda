@@ -24,6 +24,10 @@ namespace St10083869.prog7311.part2.Controllers
                 // edit product
                 try
                 {
+                    //code attribution 
+                    //Author:Unknown
+                    //Link:https://stackoverflow.com/questions/15062734/insert-in-sql-using-c-sharp 
+                    //end
                     string INSERTQUERY = "update farmers set name='" + name + "', username='" + username + "' where email='" + email + "';";
                     _con.Open();
                     SqlCommand _cmd3 = new SqlCommand(INSERTQUERY, _con);
@@ -93,6 +97,10 @@ namespace St10083869.prog7311.part2.Controllers
                 // add new product
                 try
                 {
+                    //code attribution 
+                    //Author:Unknown
+                    //Link:https://stackoverflow.com/questions/15062734/insert-in-sql-using-c-sharp 
+                    //end
                     string INSERTQUERY = "insert into farmers(email, name, password, username) values('" + email + "', '" + name + "', '" + password + "', '" + username + "')";
                     _con.Open();
                     SqlCommand _cmd3 = new SqlCommand(INSERTQUERY, _con);
@@ -132,7 +140,10 @@ namespace St10083869.prog7311.part2.Controllers
 			List<Farmer> farmers = new List<Farmer>();
 			// get all farmers from database
 			_con.Open();
-			string queryStatement = "SELECT * FROM dbo.farmers";
+            //code attribution 
+            //Author :
+            //Link:https://stackoverflow.com/questions/15124034/out-of-memory-when-reading-a-string-from-sqldatareader
+            string queryStatement = "SELECT * FROM dbo.farmers";
 			SqlCommand _cmd1 = new SqlCommand(queryStatement, _con);
 			SqlDataReader reader1 = _cmd1.ExecuteReader();
 			while (reader1.Read())
